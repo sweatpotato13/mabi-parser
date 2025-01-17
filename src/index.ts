@@ -11,33 +11,25 @@ interface Item {
     let browser;
     const itemSet = new Set<string>();
 
+    // 오늘 날짜의 파일명 생성
+    const filename = `./results/items.json`;
+
+    // results 디렉토리가 없으면 생성
+    if (!fs.existsSync('./results')) {
+        fs.mkdirSync('./results');
+    }
+
+    // 기존 파일이 있다면 삭제
+    if (fs.existsSync(filename)) {
+        fs.unlinkSync(filename);
+        console.log(`기존 ${filename} 파일을 삭제했습니다.`);
+    }
+
     // 결과를 JSON 파일로 저장하는 함수 수정
-    const saveResults = async (append: boolean = false) => {
+    const saveResults = async () => {
         const uniqueItems = Array.from(itemSet).map(item => JSON.parse(item));
-
-        // results 디렉토리가 없으면 생성
-        if (!fs.existsSync('./results')) {
-            fs.mkdirSync('./results');
-        }
-
-        // 파일명에는 날짜만 포함 (매번 같은 파일에 저장)
-        const today = new Date().toISOString().split('T')[0];
-        const filename = `./results/items-${today}.json`;
-
         try {
-            if (append && fs.existsSync(filename)) {
-                // 기존 파일이 있으면 읽어서 합치기
-                const existingData = JSON.parse(fs.readFileSync(filename, 'utf-8'));
-                const existingSet = new Set(existingData.map((item: Item) => JSON.stringify(item)));
-                uniqueItems.forEach(item => existingSet.add(JSON.stringify(item)));
-
-                const mergedItems = Array.from(existingSet).map(item => JSON.parse(item as any));
-
-                await fs.promises.writeFile(filename, JSON.stringify(mergedItems, null, 2));
-            } else {
-                // 새로 저장
-                await fs.promises.writeFile(filename, JSON.stringify(uniqueItems, null, 2));
-            }
+            await fs.promises.writeFile(filename, JSON.stringify(uniqueItems, null, 2));
         } catch (error) {
             console.error('파일 저장 중 에러:', error);
         }
@@ -75,11 +67,15 @@ interface Item {
     });
 
     try {
-        // 기존 브라우저 실행 코드
+        // 기존 브라우저 실행 코드 수정
         browser = await puppeteer.launch({
             headless: true,
             defaultViewport: null,
-            args: ['--start-maximized']
+            args: [
+                '--start-maximized',
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ]
         });
 
         // 새 페이지 열기
@@ -149,12 +145,12 @@ interface Item {
             // virtual scroll이 업데이트되기를 기다림
             await new Promise(resolve => setTimeout(resolve, 10));
 
-            // 매 반복마다 결과 저장 (append 모드)
-            await saveResults(true);
+            // 매 반복마다 결과 저장 (덮어쓰기)
+            await saveResults();
         }
 
         // 정상 종료 시에도 결과 저장
-        saveResults();
+        await saveResults();
         await browser.close();
 
     } catch (error) {
