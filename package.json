@@ -1,0 +1,68 @@
+{
+    "name": "mabi-parser",
+    "version": "0.0.1",
+    "description": "mabi parser",
+    "main": "./dist/src/index.js",
+    "types": "./dist/src/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sweatpotato13/mabi-parser.git"
+    },
+    "bugs": {
+        "url": "https://github.com/sweatpotato13/mabi-parser/issues"
+    },
+    "homepage": "https://github.com/sweatpotato13/mabi-parser",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "test": "jest",
+        "test:cov": "jest --coverage",
+        "start:dev": "ts-node-dev --poll --respawn --transpile-only src/index.ts --trace-sync-io",
+        "start:prod": "ts-node src/index.ts",
+        "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+        "prettier": "prettier --write --config .prettierrc \"{src,test}/**/*.ts\"",
+        "build": "tsc",
+        "prebuild": "rimraf ./dist",
+        "pre-commit": "lint-staged",
+        "prepare": "husky"
+    },
+    "lint-staged": {
+        "*.{ts,tsx,js,jsx}": [
+            "yarn run eslint --fix"
+        ],
+        "*.{md,json}": [
+            "prettier --write"
+        ]
+    },
+    "author": "Cute_Wisp <sweatpotato13@gmail.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "@commitlint/cli": "^19.6.1",
+        "@commitlint/config-conventional": "^19.6.0",
+        "@eslint/js": "^9.17.0",
+        "@swc/core": "1.10.4",
+        "@swc/helpers": "^0.5.15",
+        "@types/eslint__js": "^8.42.3",
+        "@types/jest": "29.5.14",
+        "@types/node": "^22.10.5",
+        "eslint": "^9.17.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-security": "^3.0.1",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "globals": "^15.14.0",
+        "husky": "9.1.7",
+        "jest": "29.7.0",
+        "lint-staged": "^15.3.0",
+        "prettier": "^3.4.2",
+        "rimraf": "^6.0.1",
+        "ts-jest": "29.2.5",
+        "ts-node": "^10.9.2",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "5.7.2",
+        "typescript-eslint": "8.19.0"
+    },
+    "dependencies": {
+        "puppeteer": "^24.1.0"
+    }
+}
