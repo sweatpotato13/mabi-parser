@@ -170,7 +170,7 @@ interface Item {
             });
 
             // virtual scroll이 업데이트되기를 기다림
-            await new Promise(resolve => setTimeout(resolve, 100));
+            await new Promise(resolve => setTimeout(resolve, 10));
 
             // 매 반복마다 결과 저장 (덮어쓰기)
             await saveResults(false);

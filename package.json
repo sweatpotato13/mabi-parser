@@ -25,11 +25,12 @@
         "build": "tsc",
         "prebuild": "rimraf ./dist",
         "pre-commit": "lint-staged",
-        "prepare": "husky"
+        "prepare": "husky",
+        "fetch-enchants": "ts-node src/enchant/scripts/fetchEnchants.ts"
     },
     "lint-staged": {
         "*.{ts,tsx,js,jsx}": [
-            "yarn run eslint --fix"
+            "pnpm lint"
         ],
         "*.{md,json}": [
             "prettier --write"
@@ -63,6 +64,8 @@
         "typescript-eslint": "8.19.0"
     },
     "dependencies": {
+        "axios": "^1.8.1",
+        "cheerio": "^1.0.0",
         "puppeteer": "^24.1.0"
     }
 }
