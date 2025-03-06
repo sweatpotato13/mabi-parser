@@ -112,6 +112,9 @@ interface Item {
             waitUntil: 'networkidle2',
         });
 
+        // 페이지가 완전히 로드될 때까지 추가 대기
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        
         let previousItemCount = 0;
         let sameCountStreak = 0;  // 연속으로 같은 개수가 나온 횟수
 
