@@ -8,4 +8,4 @@ export interface EnchantStat {
 export interface EnchantInfo {
     name: string;
     stats: EnchantStat[];
-} 
+}
